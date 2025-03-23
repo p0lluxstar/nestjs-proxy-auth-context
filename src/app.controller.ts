@@ -1,23 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { AppService } from './app.service';
-import { RequestContextService } from './services/requestContext.service';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly requestContext: RequestContextService,
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello() {
-    const token = this.requestContext.getToken();
+  getHello(@Req() request: Request) {
+    const token = request['token']; // получаем токен из объекта запроса
     return this.appService.getHello(token);
   }
 
   @Get('token')
-  getToken() {
-    const token = this.requestContext.getToken();
+  getToken(@Req() request: Request) {
+    const token = request['token']; // получаем токен из объекта запроса
     return 'token:' + token;
   }
 }

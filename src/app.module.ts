@@ -3,17 +3,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApiService } from './api.service';
 import { HttpModule } from '@nestjs/axios';
-import { AuthMiddleware } from './middlewares/auth.middleawer';
-import { RequestContextService } from './services/requestContext.service';
+import { TokenMiddleware } from './middlewares/TokenMiddleware';
 
 @Module({
   imports: [HttpModule],
   controllers: [AppController],
-  providers: [AppService, ApiService, RequestContextService],
+  providers: [AppService, ApiService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes({
+    consumer.apply(TokenMiddleware).forRoutes({
       path: '*', // для всех маршрутов
       method: RequestMethod.ALL,
     });

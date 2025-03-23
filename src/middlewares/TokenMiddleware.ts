@@ -1,16 +1,12 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { RequestContextService } from '../services/requestContext.service';
 
 @Injectable()
-export class AuthMiddleware implements NestMiddleware {
-  constructor(private readonly requestContext: RequestContextService) {}
-
+export class TokenMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
+    console.log(req.headers);
     const token = req.headers['authorization'];
-
-    this.requestContext.setToken(token);
-
+    req['token'] = token; // cохраняем токен в объекте запроса
     next();
   }
 }
